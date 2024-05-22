@@ -18,13 +18,35 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 #include <QMetaObject>
+#include <QVBoxLayout>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    this->my_button_=new MyButton(this);
+    QVBoxLayout *layout = new QVBoxLayout;
+    layout->addWidget(my_button_);
+    QWidget *centralWidget = new QWidget(this);
+    centralWidget->setLayout(layout);
+    setCentralWidget(centralWidget);
+
+    // Connect both versions of the myClicked() signal to their respective slots
+    connect(my_button_, SIGNAL(myClicked()), this, SLOT(onMyButtonClicked()));
+    connect(my_button_, SIGNAL(myClicked(const QString&)), this,
+            SLOT(onMyButtonClicked(const QString&)));
     connect(ui->slot_button,&QPushButton::clicked,this,&MainWindow::PrintSlot,Qt::DirectConnection);
+}
+
+void MainWindow::onMyButtonClicked()
+{
+    qDebug() << "MyButton was clicked!";
+}
+
+void MainWindow::onMyButtonClicked(const QString &text)
+{
+    qDebug() << "MyButton was clicked with text:" << text;
 }
 
 MainWindow::~MainWindow()

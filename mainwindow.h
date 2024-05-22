@@ -19,6 +19,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "mybutton.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -38,11 +39,15 @@ public:
 
 public slots:
     //int TextSlots();
+private slots:
+    void onMyButtonClicked(); // Slot for the signal without parameters
+    void onMyButtonClicked(const QString &text); // Slot for the signal with a QString parameter
 
 signals:
     void signalsAdd(int i);
 
 private:
     Ui::MainWindow *ui;
+    MyButton* my_button_;
 };
 #endif // MAINWINDOW_H
